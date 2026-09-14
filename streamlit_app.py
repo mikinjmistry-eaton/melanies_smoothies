@@ -48,16 +48,44 @@ if ingredients_list:
 # )
 
 
+# if ingredients_list:
+
+#     for fruit_chosen in ingredients_list:
+
+#         st.subheader(fruit_chosen + ' Nutrition Information')
+
+#         search_on = session.table("SMOOTHIES.PUBLIC.FRUIT_OPTIONS") \
+#             .filter(col("FRUIT_NAME") == fruit_chosen) \
+#             .select(col("SEARCH_ON")) \
+#             .collect()[0][0]
+
+#         smoothiefroot_response = requests.get(
+#             "https://my.smoothiefroot.com/api/fruit/" + search_on
+#         )
+
+#         st.dataframe(
+#             data=smoothiefroot_response.json(),
+#             use_container_width=True
+#         )
+
+
 if ingredients_list:
 
     for fruit_chosen in ingredients_list:
 
-        st.subheader(fruit_chosen + ' Nutrition Information')
+        search_on = pd_df.loc[
+            pd_df['FRUIT_NAME'] == fruit_chosen,
+            'SEARCH_ON'
+        ].iloc[0]
 
-        search_on = session.table("SMOOTHIES.PUBLIC.FRUIT_OPTIONS") \
-            .filter(col("FRUIT_NAME") == fruit_chosen) \
-            .select(col("SEARCH_ON")) \
-            .collect()[0][0]
+        st.write(
+            'The search value for',
+            fruit_chosen,
+            'is',
+            search_on
+        )
+
+        st.subheader(f'{fruit_chosen} Nutrition Information')
 
         smoothiefroot_response = requests.get(
             "https://my.smoothiefroot.com/api/fruit/" + search_on
